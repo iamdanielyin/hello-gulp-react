@@ -1,0 +1,22 @@
+{
+  "name": "ibird",
+  "version": "0.1.0",
+  "description": "通用后台解决方案",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yinfxs/ibird.git"
+  },
+  "keywords": [
+    "后台"
+  ],
+  "author": "yinfxs",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/yinfxs/ibird/issues"
+  },
+  "homepage": "https://github.com/yinfxs/ibird#readme"
+}
