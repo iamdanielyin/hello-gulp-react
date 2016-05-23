@@ -4,7 +4,6 @@
   "description": "通用后台解决方案",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
