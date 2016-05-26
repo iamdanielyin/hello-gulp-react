@@ -41,6 +41,7 @@
     "gulp-clean": "^0.3.2",
     "gulp-clean-css": "^2.0.8",
     "gulp-concat": "^2.6.0",
+    "gulp-htmlmin": "^2.0.0",
     "gulp-imagemin": "^3.0.1",
     "gulp-jshint": "^2.0.1",
     "gulp-notify": "^2.2.0",
