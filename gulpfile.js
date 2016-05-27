@@ -25,7 +25,7 @@ gulp.task('server', function () {
         .pipe(babel({presets: ['es2015']}))//babel转换ES2015语法
         .pipe(jshint.reporter('default'))         //JS代码检查
         .pipe(gulp.dest('./dist/server/'))        //构建后输出
-        .pipe(notify({message: '服务端构建完成'}));
+        // .pipe(notify({message: '服务端构建完成'}));
 });
 
 // 管理后台样式处理任务
@@ -34,8 +34,8 @@ gulp.task('client:backend:styles', function () {
         .pipe(concat('backend.css'))           //合并样式文件
         .pipe(cleanCSS())                  //压缩合并文件
         .pipe(rename({suffix: '.min'}))   //重命名压缩文件
-        .pipe(gulp.dest('./dist/public/backend/styles/'))      //输出压缩后的文件
-        .pipe(notify({message: '管理后台样式处理完成'}));
+        .pipe(gulp.dest('./dist/client/backend/'))      //输出压缩后的文件
+        // .pipe(notify({message: '管理后台样式处理完成'}));
 });
 
 // 客户端样式处理任务
@@ -44,8 +44,8 @@ gulp.task('client:frontend:styles', function () {
         .pipe(concat('frontend.css'))           //合并样式文件
         .pipe(cleanCSS())                  //压缩合并文件
         .pipe(rename({suffix: '.min'}))   //重命名压缩文件
-        .pipe(gulp.dest('./dist/public/frontend/styles/'))      //输出压缩后的文件
-        .pipe(notify({message: '客户端样式处理完成'}));
+        .pipe(gulp.dest('./dist/client/frontend/'))      //输出压缩后的文件
+        // .pipe(notify({message: '客户端样式处理完成'}));
 });
 
 
@@ -54,7 +54,7 @@ gulp.task('client:backend:htmls', function () {
     return gulp.src('src/client/backend/*.html')    //引入所有管理后台网页文件
         .pipe(htmlmin({collapseWhitespace: true}))           //压缩网页文件
         .pipe(gulp.dest('./dist/client/backend/'))      //输出压缩后的文件
-        .pipe(notify({message: '管理后台网页压缩处理完成'}));
+        // .pipe(notify({message: '管理后台网页压缩处理完成'}));
 });
 
 // 客户端网页压缩处理任务
@@ -62,7 +62,7 @@ gulp.task('client:frontend:htmls', function () {
     return gulp.src('src/client/frontend/*.html')    //引入所有客户端网页文件
         .pipe(htmlmin({collapseWhitespace: true}))           //压缩网页文件
         .pipe(gulp.dest('./dist/client/frontend/'))      //输出压缩后的文件
-        .pipe(notify({message: '客户端网页压缩处理完成'}));
+        // .pipe(notify({message: '客户端网页压缩处理完成'}));
 });
 
 // 管理后台模块处理任务
@@ -73,7 +73,7 @@ gulp.task('client:backend:scripts', function () {
         .pipe(uglify())                           //压缩合并文件
         .pipe(rename({suffix: '.min'}))         //重命名压缩文件
         .pipe(gulp.dest('./dist/client/backend/'))        //输出压缩后的文件
-        .pipe(notify({message: '管理后台模块处理完成'}));
+        // .pipe(notify({message: '管理后台模块处理完成'}));
 });
 
 // 客户端模块处理任务
@@ -84,7 +84,7 @@ gulp.task('client:frontend:scripts', function () {
         .pipe(uglify())                           //压缩合并文件
         .pipe(rename({suffix: '.min'}))         //重命名压缩文件
         .pipe(gulp.dest('./dist/client/frontend/'))        //输出压缩后的文件
-        .pipe(notify({message: '客户端模块处理完成'}));
+        // .pipe(notify({message: '客户端模块处理完成'}));
 });
 
 // 管理后台图片处理任务
@@ -92,7 +92,7 @@ gulp.task('client:backend:images', function () {
     return gulp.src('src/public/backend/images/**/*')        //引入所有需处理的图片文件
         .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))      //压缩图片
         .pipe(gulp.dest('./dist/public/backend/images/')) //输出压缩后的图片
-        .pipe(notify({message: '管理后台图片处理完成'}));
+        // .pipe(notify({message: '管理后台图片处理完成'}));
 });
 
 // 客户端图片处理任务
@@ -100,7 +100,20 @@ gulp.task('client:frontend:images', function () {
     return gulp.src('src/public/backend/images/**/*')        //引入所有需处理的图片文件
         .pipe(imagemin({optimizationLevel: 3, progressive: true, interlaced: true}))      //压缩图片
         .pipe(gulp.dest('./dist/public/backend/images/')) //输出压缩后的图片
-        .pipe(notify({message: '客户端图片处理完成'}));
+        // .pipe(notify({message: '客户端图片处理完成'}));
+});
+
+// 依赖模块复制任务
+gulp.task('node_modules', function () {
+    return gulp.src('node_modules/**/*')        //引入所有依赖模块
+        .pipe(gulp.dest('./dist/node_modules/')); //输出到输出目录中
+});
+
+// 模块配置文件复制任务
+gulp.task('pkgfile', function () {
+    return gulp.src('./package.json')        //引入模块配置文件
+        .pipe(gulp.dest('./dist/')) //输出到输出目录中
+        // .pipe(notify({message: '模块配置文件复制完成'}));
 });
 
 // 输出目录清理任务
@@ -110,7 +123,7 @@ gulp.task('clean', function () {
 });
 
 // 文档临听任务
-gulp.task('watch', function () {
+gulp.task('watch', ['build'], function () {
     gulp.watch('src/server/**/*.js', ['server']);//监听服务端
     gulp.watch('src/public/frontend/styles/**/*.css', ['client:frontend:styles']);//监听客户端样式
     gulp.watch('src/public/backend/styles/**/*.css', ['client:backend:styles']);//监听管理后台样式
@@ -120,6 +133,8 @@ gulp.task('watch', function () {
     gulp.watch('src/public/backend/images/**/*', ['client:backend:images']);//监听管理后台图片资源
     gulp.watch('src/client/frontend/*.html', ['client:frontend:htmls']);//监听客户端网页资源
     gulp.watch('src/client/backend/*.html', ['client:backend:htmls']);//监听管理后台网页资源
+    gulp.watch('node_modules/**/*', ['node_modules']);//依赖模块
+    gulp.watch('./package.json', ['pkgfile']);//模块配置文件
 });
 
 // 注册默认任务
@@ -127,7 +142,8 @@ gulp.task('build', ['server',
     'client:backend:styles', 'client:frontend:styles',
     'client:backend:scripts', 'client:frontend:scripts',
     'client:backend:images', 'client:frontend:images',
-    'client:backend:htmls', 'client:frontend:htmls'
+    'client:backend:htmls', 'client:frontend:htmls',
+    'node_modules', 'pkgfile'
 ]);
 
 // 注册默认任务
